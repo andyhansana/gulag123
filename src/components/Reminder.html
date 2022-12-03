@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!-- First define this file as an HTML document -->
+
+<html>
+<!-- This file will use the HTML5 standard -->
+
+<head>
+<!-- Information about the document begins here -->
+
+  <title>Reminders</title>
+<!-- Set the document title to “Reminders” -->
+
+  <meta charset="utf-8">
+<!-- Let’s use utf-8 encoding for special characters -->
+
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
+<!-- This prohibits mobile users from pinching and zooming, which also speeds up tap response time -->
+
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+<!-- Try to load the “Open Sans” font from Google Web Fonts if the device is online -->
+
+  <style type="text/css">
+/* Styles begin here */
+
+    * {box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-kerning:auto;font-family:'Open Sans','Source Sans Pro',Roboto,'HelveticaNeue-Light','Helvetica Neue Light','Helvetica Neue','Myriad Pro','Segoe UI',Myriad,Helvetica,'Lucida Grande','DejaVu Sans Condensed','Liberation Sans','Nimbus Sans L',Tahoma,Geneva,Arial,sans-serif;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;cursor:default;}
+/* Browsers calculate padding inside element width, try to use nice fonts, disallow text selection */
+
+    html {-webkit-text-size-adjust: 100%;}
+/* Font sizes look the same size whether in portrait or landscape mode on mobile devices */
+
+    body {margin:0;background:#fc0;}
+/* Make the document background yellow */
+
+    h1 {margin:15px 0;line-height:1.2;color:#e90;padding:0 15px;}
+/* Make the main headline dark yellow */
+
+    section {padding:0 15px;position:relative;}
+/* Add space to the left and right side of each reminder container */
+
+    section input[type=text] {margin:0 0 15px 0;-webkit-appearance:none;appearance:none;background:#fc0;color:black;border:1px solid #e90;border-radius:1px;padding:5px;font-size:14pt;font-weight:normal;outline:none;float:left;width:calc(100% - 50px);cursor:pointer;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}
+/* Remove default text field style in the browser, add a dark yellow outline to reminders */
+
+    section input[type=button] {margin:0 0 15px 0;-webkit-appearance:none;appearance:none;border:1px solid #e90;background:#fc0;color:#e90;border-radius:1px;padding:5px;font-size:19pt;line-height:1;font-weight:bold;outline:none;width:35px;float: right;cursor: pointer;}
+/* Remove default button style in the browser, add a dark yellow outline to complete buttons */
+
+    #enter input[type=text] {background:#fe5;}
+/* Main input text field has light yellow background */
+
+    #enter input[type=button] {background:#e90;color:#fc0;border-color:#e90;}
+/* Main input button has dark yellow background */
+
+  </style>
+<!-- Styles end here-->
+
+</head>
+<!-- Information about the document ends here -->
+
+<body>
+<!-- Start the document content here -->
+
+  
+  <h1>Reminders</h1>
+<!-- Add a main headline that says “Reminders” -->
+
+  <section id="enter">
+<!-- Create a container to hold the main input -->
+
+    <input type="text" autofocus>
+<!-- Create a text input, and focus the field when the document loads for faster entry -->
+
+    <input type="button" value="+" onClick="reminders.create(input.value)">
+<!-- Create a button with a “+” symbol that creates a reminder with the value of the text input -->
+
+  </section>
+<!-- Close the container that holds the main input-->
+
+  <script type="text/javascript">
+// Start the script here
+
+    var input = document.querySelectorAll('#enter input[type=text]')[0],
+// Let’s refer to the the main input as ‘input’ in our code,
+
+        entries = {},
+// All of the reminders ‘entries’,
+
+        completed = {},
+// and the completed reminders ‘completed’,
+
+        reminders = {
+// Now let’s define what we can do with reminders!
+
+          create: function(text) {
+// What follows happens whenever we create a reminder
+
+            if (text != '') {
+// If the input isn’t empty,
+
+              var entry = Date.now();
+// Let’s create an entry with the timestamp of the second the reminder is created
+
+              if (localStorage.entries) {
+// If there are already reminders in the browser’s localStorage,
+
+                entries = JSON.parse(localStorage.entries);
+// Read the reminders as JSON-formatted data,
+
+              }
+// …and if not, let’s get on with things
+
+              entries[entry] = text;
+// The text of the reminder we want to save should match the content of the text input after editing
+
+              localStorage.entries = JSON.stringify(entries);
+// Now let’s encode the reminders as JSON-formatted data and add them to browser’s localStorage
+
+              input.value = '';
+// Clear the content from the main input
+
+              reminders.display('entries');
+// Update list of reminders
+
+            }
+// And whether we are able to update the reminders or not,
+
+            input.focus();
+// Focus the main input
+
+          },
+// This concludes what happens when we create a reminder
+
+          display: function(list) {
+// What follows happens whenever we display reminders
+
+            var list = JSON.parse(localStorage[list]);
+// Look for saved and completed reminders
+
+            for (var entry in list) {
+// For each reminder we find
+
+              var box = document.createElement('section'),
+// Let’s create a new container,
+
+                  task = document.createElement('input'),
+// a new input to hold the reminder,
+
+                  exit = document.createElement('input');
+// and an input we can use to click to complete reminders
+
+              task.type = 'text';
+// The input that holds the reminder should be a text field
+
+              task.setAttribute('onblur', 'reminders.edit(this.value, this.parentNode.id)');
+// Every time the user edits the content of this text field it will update the matching reminder
+
+              task.value = list[entry];
+// Fill the new text field with the content of the reminder
+
+              exit.type = 'button';
+// The input that represents the reminder complete should be a button
+
+              exit.setAttribute('onclick', 'reminders.complete(this.parentNode.id)');
+// Every time the user clicks a reminder complete button, complete the matching reminder
+
+              exit.value = '×';
+// Make the exit button display an ‘×’
+
+              box.id = entry;
+// Name the new reminder container after the timestamp of the reminder loaded inside
+
+              box.appendChild(task);
+// Add the reminder text field to the new container
+
+              box.appendChild(exit);
+// Add the complete button to the new container
+
+              if (!document.getElementById(entry)) {
+// If there isn’t already a reminder with a matching timestamp already displayed
+
+                document.getElementsByTagName('body')[0].insertBefore(box, document.getElementById('enter'));
+// Add the new container with the reminder and button to the document, above the main input,
+
+              }
+// and if there’s already a reminder with a matching timestamp displayed, the do nothing.
+
+            }
+// That concludes what we do each reminder we find
+
+          },
+// This concludes what happens when we display reminders
+
+          edit: function (text, id) {
+// What follows happens whenever we edit reminders
+
+            entries = JSON.parse(localStorage.entries);
+// Read existing reminders from browser’s localStorage
+
+            entries[id] = text;
+// Update the reminder text for the reminder we are editing
+
+            localStorage.entries = JSON.stringify(entries);
+// Encode reminders as JSON-formatted data and add them to browser’s localStorage
+
+          },
+// This concludes what happens when we edit reminders
+
+          complete: function (id) {
+// What follows happens whenever we complete reminders
+
+            entries = JSON.parse(localStorage.entries);
+// Read existing reminders from browser’s localStorage
+
+            if (localStorage.completed) {
+// If there are already completed reminders in the browser’s localStorage,
+
+              completed = JSON.parse(localStorage.completed);
+// Read the completed reminders as JSON-formatted data,
+
+            }
+// …and if not let’s get on with things
+
+            completed[id] = entries[id];
+// Clone the completed reminder’s content to the completed reminders list with the same timestamp
+
+            delete entries[id];
+// Remove the completed reminder’s container from the document
+
+            localStorage.completed = JSON.stringify(completed);
+// Encode completed reminders as JSON-formatted data and add them to browser’s localStorage
+
+            localStorage.entries = JSON.stringify(entries);
+// Encode reminders as JSON-formatted data and add them to browser’s localStorage
+
+            reminders.display('entries');
+// display existing reminders
+
+            document.getElementById(id).remove();
+// Remove the completed reminder from the document
+
+          }
+// This concludes what happens when we complete reminders
+
+        }
+// This concludes what we can do with reminders
+
+    document.onkeydown = function(e) {
+// Every time a keyboard key is pressed
+
+      e = e || window.event;
+// Let ‘e’ represent an event
+
+      var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+// Let’s use ‘charCode’ to represent the key that is pressed
+
+      if (charCode == 13) {reminders.create(input.value);} /* enter key creates new reminder */
+// Create a new reminder if the ‘Enter’ key is pressed
+
+    }
+// End keyboard shortcuts
+
+    reminders.display('entries');
+// When the document loads display any existing reminders
+
+  </script>
+<!-- End the script here -->
+
+</body>
+<!-- End the document content here -->
+
+<!-- End the HTML document-->
+</html>

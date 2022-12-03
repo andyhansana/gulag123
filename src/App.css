@@ -1,0 +1,53 @@
+.form-contain {
+    margin: auto;
+    width: 50%;
+}
+
+.flex-parent-element {
+    display: flex;
+    width: 80%;
+}
+  
+.flex-child-element {
+    flex: 1;
+    border: 2px solid blueviolet;
+    margin: 10px;
+}
+
+.flex-child-element:first-child {
+    margin-right: 20px;
+}
+
+.parked {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.not-parked {
+    position: absolute;
+    bottom: 0;
+}
+
+html {-webkit-text-size-adjust: 100%;}
+/* Font sizes look the same size whether in portrait or landscape mode on mobile devices */
+
+    body {margin:0;background:#fc0;}
+/* Make the document background yellow */
+
+    h1 {margin:15px 0;line-height:1.2;color:#e90;padding:0 15px;}
+/* Make the main headline dark yellow */
+
+    section {padding:0 15px;position:relative;}
+/* Add space to the left and right side of each reminder container */
+
+    section input[type=text] {margin:0 0 15px 0;-webkit-appearance:none;appearance:none;background:#fc0;color:black;border:1px solid #e90;border-radius:1px;padding:5px;font-size:14pt;font-weight:normal;outline:none;float:left;width:calc(100% - 50px);cursor:pointer;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;-o-user-select:text;user-select:text;}
+/* Remove default text field style in the browser, add a dark yellow outline to reminders */
+
+    section input[type=button] {margin:0 0 15px 0;-webkit-appearance:none;appearance:none;border:1px solid #e90;background:#fc0;color:#e90;border-radius:1px;padding:5px;font-size:19pt;line-height:1;font-weight:bold;outline:none;width:35px;float: right;cursor: pointer;}
+/* Remove default button style in the browser, add a dark yellow outline to complete buttons */
+
+    #enter input[type=text] {background:#fe5;}
+/* Main input text field has light yellow background */
+
+    #enter input[type=button] {background:#e90;color:#fc0;border-color:#e90;}
+/* Main input button has dark yellow background */
