@@ -47,7 +47,6 @@ MVP To Complete by end of week 13:
 	-Another button that says I just parked, once that button is clicked, ask their browser for their current location and store that as where they just parked
 
 
-[Website Link](https://unrivaled-wisp-07ed59.netlify.app/)
 
 
 ------------------------------
@@ -66,7 +65,6 @@ Homework F.2: Final project GRADED deliverable 1 - deployed functional progress 
 	- Implemented supabase database for backend that keeps track of users that are authenticated into the web application. <br /> 
 	
 ***Include a link to the deployment of your app in README.md - this can be your main app URL, or a branch deploy.<br />*** 
-	- [Website Link](https://unrivaled-wisp-07ed59.netlify.app/) <br /> 
 	-If needed to run on local machine, run NPM INSTALL to install all dependencies from the package.json. NPM RUN DEV will run the server locally with the web browser. 
 ------------------------------
 12/3/22
