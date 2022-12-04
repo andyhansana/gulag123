@@ -20,6 +20,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withTheme } from "./components/Theme/Theme";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import TodoInput  from './components/Todos/components/TodoInput';
 
 
 function App() {
@@ -44,6 +45,13 @@ function App() {
 
   // TO DO - Setup listener for supabase realtime API for updates to the service requests 
   // For example , if any of the service request is completed then this should invoke this realtime API which inturn should update the list of requests
+  const channel = supabase
+  .channel('table-db-changes')
+  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'parking_app' }, (payload) =>
+    console.log(payload)
+  )
+  .subscribe()
+
 
   const addRequest = async (element) => {
     console.log(element)
@@ -52,10 +60,20 @@ function App() {
     // Call the supabase API to add the new service request (initially the accept_reject should be 'false' to indicate the service request is yet to completed by an admin).
       // When you will insert the a service request record you will also have to provide the "user_id". This is a field which maps which user created the service request.
       // For getting this you can make use of supabase.auth.getSession(). The will return a json containing information about the authenticated user
-    // If this API call succeeds add the element to the list of requests with setRequests  
+    // If this API call succeeds add the element to the list of requests with setRequests  \
+
+    const { error } = await supabase
+      .from('parking_app')
+      .insert([{ 
+        email: element.email, 
+        task_name: element.todo.text, 
+        completed: false, 
+        user_id: session.user.id,
+
+      }])
+
     setRequests(newRequests);
   };
-
   const completeRequest = async (index, serviceId = 0) => {
     const newRequests = [...requests];
     // TO DO
@@ -80,6 +98,7 @@ function App() {
       <Routes>
         {/* Allow only authenticated user to proceed to RequestList, AddRequestForm, RequestChart else Navigate to landing component */}
         <Route path="/" element={<Landing />} />
+        <Route path="/add" element={<TodoInput addRequest={addRequest} />} />
         <Route path="/map" element={<Map  />} />
       </Routes>
     </>
