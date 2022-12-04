@@ -68,7 +68,12 @@ Homework F.2: Final project GRADED deliverable 1 - deployed functional progress 
 ***Include a link to the deployment of your app in README.md - this can be your main app URL, or a branch deploy.<br />*** 
 	- [Website Link](https://unrivaled-wisp-07ed59.netlify.app/) <br /> 
 	-If needed to run on local machine, run NPM INSTALL to install all dependencies from the package.json. NPM RUN DEV will run the server locally with the web browser. 
+------------------------------
+12/3/22
 
+homework F.3 - Final Project Final Checkpoint
+- [Link to Final Web App](https://unrivaled-wisp-07ed59.netlify.app/) <br /> 
+- [Link to Apple Shortcut](https://www.icloud.com/shortcuts/003f8bcb55e64974bd666913269caab6) <br /> 
 
 	
 	
